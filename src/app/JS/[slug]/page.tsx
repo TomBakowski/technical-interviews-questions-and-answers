@@ -5,14 +5,20 @@ export const generateStaticParams = async () =>
   allDocs.map((doc) => ({ slug: doc._raw.flattenedPath }));
 
 export const generateMetadata = ({ params }: { params: { slug: string } }) => {
-  const post = allDocs.find((doc) => doc._raw.flattenedPath === params.slug);
-  if (!post) throw new Error(`Post not found for slug: ${params.slug}`);
-  return { title: post.title };
+  console.log("tomek--- xxxx", params, allDocs);
+
+  const doc = allDocs.find(
+    (doc) => doc._raw.flattenedPath === `JS/${params.slug}`
+  );
+  if (!doc) throw new Error(`Document not found for slug: ${params.slug}`);
+  return { title: doc.title };
 };
 
 const DocLayout = ({ params }: { params: { slug: string } }) => {
-  const doc = allDocs.find((doc) => doc._raw.flattenedPath === params.slug);
-  if (!doc) throw new Error(`Doc not found for slug: ${params.slug}`);
+  const doc = allDocs.find(
+    (doc) => doc._raw.flattenedPath === `JS/${params.slug}`
+  );
+  if (!doc) throw new Error(`Document not found for slug: ${params.slug}`);
 
   return (
     <article className="mx-auto max-w-xl py-8">

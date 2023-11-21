@@ -1,17 +1,36 @@
 // contentlayer.config.ts
-import { defineDocumentType, makeSource } from "contentlayer/source-files";
+import {
+  defineDocumentType,
+  defineNestedType,
+  makeSource,
+} from "contentlayer/source-files";
+
+const Url = defineNestedType(() => ({
+  name: "Url",
+  fields: {
+    label: { type: "string", required: true },
+    url: { type: "string", required: true },
+  },
+}));
 
 export const Doc = defineDocumentType(() => ({
   name: "Doc",
   filePathPattern: `**/*.md`,
   fields: {
     title: { type: "string", required: true },
+    description: { type: "string", required: true },
+    category: { type: "string", required: true },
     date: { type: "date", required: true },
+    tags: { type: "list", required: true, of: { type: "string" } },
+    urls: {
+      type: "list",
+      of: Url,
+    },
   },
   computedFields: {
     url: {
       type: "string",
-      resolve: (doc) => `/JS/${doc._raw.flattenedPath}`,
+      resolve: (doc) => `/${doc._raw.flattenedPath}`,
     },
   },
 }));
