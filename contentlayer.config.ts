@@ -15,7 +15,7 @@ const Url = defineNestedType(() => ({
 
 export const Doc = defineDocumentType(() => ({
   name: "Doc",
-  filePathPattern: `**/*.md`,
+  filePathPattern: `**/*.mdx`,
   fields: {
     title: { type: "string", required: true },
     description: { type: "string", required: true },
@@ -27,6 +27,7 @@ export const Doc = defineDocumentType(() => ({
       of: Url,
     },
   },
+  contentType: "mdx",
   computedFields: {
     url: {
       type: "string",

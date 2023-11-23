@@ -1,9 +1,8 @@
-// app/page.tsx
 import DocCardIndexItem from "@/components/DocCard/DocCardIndexItem";
 import { allDocs } from "contentlayer/generated";
 import { compareDesc } from "date-fns";
 
-export default function Home() {
+const JSPageIndex = () => {
   const docs = allDocs.sort((a, b) =>
     compareDesc(new Date(a.date), new Date(b.date))
   );
@@ -19,4 +18,6 @@ export default function Home() {
       ))}
     </div>
   );
-}
+};
+
+export default JSPageIndex;

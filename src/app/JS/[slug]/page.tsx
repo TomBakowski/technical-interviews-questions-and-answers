@@ -1,11 +1,13 @@
+import MDXLayout from "@/components/MDXLayout/MDXLayout";
 import { allDocs } from "contentlayer/generated";
 import { format, parseISO } from "date-fns";
+import { useMDXComponent } from "next-contentlayer/hooks";
 
 export const generateStaticParams = async () =>
   allDocs.map((doc) => ({ slug: doc._raw.flattenedPath }));
 
 export const generateMetadata = ({ params }: { params: { slug: string } }) => {
-  console.log("tomek--- xxxx", params, allDocs);
+  // console.log("tomek--- xxxx", params, allDocs);
 
   const doc = allDocs.find(
     (doc) => doc._raw.flattenedPath === `JS/${params.slug}`
@@ -15,10 +17,16 @@ export const generateMetadata = ({ params }: { params: { slug: string } }) => {
 };
 
 const DocLayout = ({ params }: { params: { slug: string } }) => {
+  console.log("tomek--- SLUG", params.slug);
   const doc = allDocs.find(
     (doc) => doc._raw.flattenedPath === `JS/${params.slug}`
   );
+
+  console.log("tomek--- Doc", doc?.title);
+
   if (!doc) throw new Error(`Document not found for slug: ${params.slug}`);
+
+  const MDXContent = useMDXComponent(doc.body.code);
 
   return (
     <article className="mx-auto max-w-xl py-8">
@@ -28,10 +36,16 @@ const DocLayout = ({ params }: { params: { slug: string } }) => {
         </time>
         <h1 className="text-3xl font-bold">{doc.title}</h1>
       </div>
-      <div
+      {/* <div
         className="[&>*]:mb-3 [&>*:last-child]:mb-0"
         dangerouslySetInnerHTML={{ __html: doc.body.html }}
-      />
+      /> */}
+      <div className="[&>*]:mb-3 [&>*:last-child]:mb-0">
+        {" "}
+        <MDXLayout>
+          <MDXContent />
+        </MDXLayout>
+      </div>
     </article>
   );
 };
